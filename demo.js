@@ -1,25 +1,30 @@
-var dat   = require('dat-gui');
-var Stats = require('stats-js');
-var PIXI  = require('pixi.js');
-var fit = require('./libs/fit');
+var dat    = require('dat-gui');
+var Stats  = require('stats-js');
+var PIXI   = require('pixi.js');
+var fit    = require('./libs/fit');
 
-var W = window.innerWidth;
-var H = window.innerHeight;
+PIXI.utils._saidHello = true;
 
-var loadingCounter = 0;
+var Rect   = require('./view/Rect');
+var Circle = require('./view/Circle');
+
 var GUIParams = function(){
-    this.speed = 1;
+    this.speed = 10;
+    this.interval = 1;
     this.masks = 150;
-    this.maxSizeMask = 50;
+    this.maxSizeMask = 75;
+    this.W = window.innerWidth;
+    this.H = window.innerHeight;
+    this.selectedShape = "circle";
+    this.debug = false;
 }
 
+var loadingCounter = 0;
 var params = new GUIParams();
-
-var stats = new Stats(); stats.domElement.style.position = 'absolute';
-document.body.appendChild(stats.domElement);
+var stats = new Stats(); stats.domElement.style.position = 'absolute';document.body.appendChild(stats.domElement);
 
 var stage = new PIXI.Stage(0x000000, true);
-var renderer = PIXI.autoDetectRenderer(W, H);
+var renderer = PIXI.autoDetectRenderer(params.W, params.H);
 document.body.appendChild(renderer.view);
 
 var photo1 = PIXI.Sprite.fromImage('photos/photo-bw.jpg');
@@ -33,8 +38,9 @@ photo2.texture.baseTexture.on('loaded', loadedImage.bind(this));
 stage.addChild(photo2);
 
 var mask = new PIXI.Graphics();
-mask.lineStyle(0);
 stage.addChild(mask);
+
+var shapes = [];
 
 function loadedImage()
 {
@@ -48,7 +54,7 @@ function loadedImage()
 
 function resizeImage(image)
 {
-    var stage = {x : 0, y: 0, width: W, height: H};
+    var stage = {x : 0, y: 0, width: params.W, height: params.H};
     var imageS = {x : 0, y: 0, width: image.texture.baseTexture.realWidth, height: image.texture.baseTexture.realHeight};
     var r = fit(imageS, stage, {cover: true});
     image.width = r.width;
@@ -59,30 +65,39 @@ function resizeImage(image)
 
 function generateShapes()
 {
-    mask.clear();
+    var i = 0;
 
-    console.log(params.masks)
+    for (i = 0; i < shapes.length; i++) {
+        shapes[i].kill();
+    };
 
-    for (var i = 0; i < params.masks; i++) 
+    clearMask();
+
+    shapes = [];
+    
+    var SelectedShape = Rect;
+    switch(params.selectedShape)
     {
-        setTimeout(function(){
-            var size = Math.random() * params.maxSizeMask;
-            mask.beginFill(0xFFFFFF, 1);
-            xx = Math.random() * W;
-            yy = Math.random() * H;
-            mask.moveTo(xx, yy);
-            mask.lineTo(xx + size, yy + 0);
-            mask.lineTo(xx + size, yy + size);
-            mask.lineTo(xx + 0, yy + size);
-            mask.lineTo(xx + 0, yy + 0);
-            mask.endFill();
-        }, i * params.speed);
+        case "rect"   : SelectedShape = Rect;   break;
+        case "circle" : SelectedShape = Circle; break;
+    }
+
+    for (i = 0; i < params.masks; i++) 
+    {
+        var shape = new SelectedShape(mask, params, i);
+        shapes.push(shape);
     };
 }
 
-generateShapes();
+function clearMask()
+{
+    mask.clear();
+    mask.lineStyle(0);
+    mask.beginFill(0xFFFFFF, 1);
+    mask.drawCircle(0, 0, .1);
+    photo2.mask = params.debug ? null : mask;
+}
 
-photo2.mask = mask;
 
 function update()
 {
@@ -95,18 +110,25 @@ function update()
 }
 
 var gui = new dat.GUI()
-gui.add(params, 'speed', 0, 10).onChange(generateShapes.bind(this));
-gui.add(params, 'masks', 0, 250).step(1).onChange(generateShapes.bind(this));
+gui.add(params, 'selectedShape', ['rect', 'circle']).onChange(generateShapes.bind(this));
+gui.add(params, 'speed', 0, 100).onChange(generateShapes.bind(this));
+gui.add(params, 'interval', 0, 10).onChange(generateShapes.bind(this));
+gui.add(params, 'masks', 0, 450).step(1).onChange(generateShapes.bind(this));
 gui.add(params, 'maxSizeMask', 0, 200).onChange(generateShapes.bind(this));
+gui.add(params, 'debug').onChange(generateShapes.bind(this));
+
 
 onResize();
+generateShapes();
 update();
 window.onresize = onResize;
 function onResize(){
-    W = window.innerWidth;
-    H = window.innerHeight;
+    params.W = window.innerWidth;
+    params.H = window.innerHeight;
 
-    renderer.resize(W, H);
+    generateShapes()
+
+    renderer.resize(params.W, params.H);
 
     resizeImage(photo1);
     resizeImage(photo2);
