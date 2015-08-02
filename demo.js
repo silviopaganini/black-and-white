@@ -10,7 +10,7 @@ var Circle        = require('./view/Circle');
 var CirclePattern = require('./view/CirclePattern');
 
 var GUIParams = function(){
-    this.speed = 0;
+    this.speed = 0.1;
     this.interval = .5;
     this.masks = 150;
     this.maxSizeMask = 75;
@@ -114,7 +114,9 @@ var ticker = PIXI.ticker.shared;
 ticker.autoStart = false;
 ticker.stop();
 ticker.add(update.bind(this));
-window.aaa = photo2;
+window.renderer = renderer;
+window.mask = mask;
+window.photo2 = photo2;
 
 function update()
 {
@@ -125,8 +127,8 @@ function update()
 
 var gui = new dat.GUI()
 gui.add(params, 'selectedShape', ['rect', 'circle', 'pattern']).onChange(generateShapes.bind(this));
-gui.add(params, 'speed', 0, 5).onChange(generateShapes.bind(this));
-gui.add(params, 'interval', 0, 10).onChange(generateShapes.bind(this));
+gui.add(params, 'speed', 0, .2).step(.01).onChange(generateShapes.bind(this));
+gui.add(params, 'interval', 0, 1).step(.1).onChange(generateShapes.bind(this));
 gui.add(params, 'masks', 0, 450).step(1).onChange(generateShapes.bind(this));
 gui.add(params, 'elementsPerLine', 1, 50).step(1).onChange(generateShapes.bind(this));
 gui.add(params, 'spacing', 1, 250).onChange(generateShapes.bind(this));
