@@ -1,23 +1,25 @@
 var TweenMax = require('gsap');
 var PIXI     = require('pixi.js');
 
-var Shape = function(graph, params, index)
+var Shape = function(graph, params, index, total, line)
 {
-    this.index      = index;
-    this.params     = params;
-    this.size       = Math.random() * this.params.maxSizeMask;
-    this.graph      = graph;
+    this.index  = index;
+    this.total  = total;
+    this.line   = line;
+    this.params = params;
+    this.size   = Math.random() * this.params.maxSizeMask;
+    this.graph  = graph;
     
     this.xx = (Math.random() * this.params.W);
     this.yy = (Math.random() * this.params.H);
 
-    this.animateIn();
+    // this.xx = this.size * index / 10;
+    // this.yy = this.size * index / 10;
 }
 
 Shape.prototype.draw = function(){};
 
 Shape.prototype.animateIn = function() {
-
     TweenMax.from(this, this.params.speed / 50, {
         size: 0, 
         delay: (this.params.interval / 100) * this.index,

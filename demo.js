@@ -5,17 +5,20 @@ var fit    = require('./libs/fit');
 
 PIXI.utils._saidHello = true;
 
-var Rect   = require('./view/Rect');
-var Circle = require('./view/Circle');
+var Rect          = require('./view/Rect');
+var Circle        = require('./view/Circle');
+var CirclePattern = require('./view/CirclePattern');
 
 var GUIParams = function(){
-    this.speed = 10;
-    this.interval = 1;
+    this.speed = 0;
+    this.interval = .5;
     this.masks = 150;
     this.maxSizeMask = 75;
     this.W = window.innerWidth;
     this.H = window.innerHeight;
-    this.selectedShape = "circle";
+    this.selectedShape = "pattern";
+    this.elementsPerLine = 10;
+    this.spacing = 10;
     this.debug = false;
 }
 
@@ -23,22 +26,25 @@ var loadingCounter = 0;
 var params = new GUIParams();
 var stats = new Stats(); stats.domElement.style.position = 'absolute';document.body.appendChild(stats.domElement);
 
-var stage = new PIXI.Stage(0x000000, true);
+var stage = new PIXI.Container();
+
 var renderer = PIXI.autoDetectRenderer(params.W, params.H);
+// var renderer = new PIXI.CanvasRenderer(params.W, params.H);
 document.body.appendChild(renderer.view);
 
 var photo1 = PIXI.Sprite.fromImage('photos/photo-bw.jpg');
-photo1.noFrame = true;
 photo1.texture.baseTexture.on('loaded', loadedImage.bind(this));
 stage.addChild(photo1);
 
 var photo2 = PIXI.Sprite.fromImage('photos/photo-co.jpg');
-photo2.noFrame = true;
 photo2.texture.baseTexture.on('loaded', loadedImage.bind(this));
 stage.addChild(photo2);
 
 var mask = new PIXI.Graphics();
+// mask.isMask = true;
 stage.addChild(mask);
+
+photo2.mask = mask;
 
 var shapes = [];
 
@@ -49,6 +55,8 @@ function loadedImage()
     {
         resizeImage(photo1);
         resizeImage(photo2);
+        onResize();
+        ticker.start();
     }
 }
 
@@ -78,14 +86,19 @@ function generateShapes()
     var SelectedShape = Rect;
     switch(params.selectedShape)
     {
-        case "rect"   : SelectedShape = Rect;   break;
-        case "circle" : SelectedShape = Circle; break;
+        case "rect"    : SelectedShape = Rect;   break;
+        case "circle"  : SelectedShape = Circle; break;
+        case "pattern" : SelectedShape = CirclePattern; break;
     }
+
+    var line = 0;
 
     for (i = 0; i < params.masks; i++) 
     {
-        var shape = new SelectedShape(mask, params, i);
+        var shape = new SelectedShape(mask, params, i, params.masks, line);
         shapes.push(shape);
+        shape.animateIn();
+        if(i % params.elementsPerLine == 0) line++;
     };
 }
 
@@ -95,41 +108,46 @@ function clearMask()
     mask.lineStyle(0);
     mask.beginFill(0xFFFFFF, 1);
     mask.drawCircle(0, 0, .1);
-    photo2.mask = params.debug ? null : mask;
 }
 
+var ticker = PIXI.ticker.shared;
+ticker.autoStart = false;
+ticker.stop();
+ticker.add(update.bind(this));
+window.aaa = photo2;
 
 function update()
 {
     stats.begin();
-
     renderer.render(stage);
     stats.end()
-    
-    requestAnimationFrame(update);
 }
 
 var gui = new dat.GUI()
-gui.add(params, 'selectedShape', ['rect', 'circle']).onChange(generateShapes.bind(this));
-gui.add(params, 'speed', 0, 100).onChange(generateShapes.bind(this));
+gui.add(params, 'selectedShape', ['rect', 'circle', 'pattern']).onChange(generateShapes.bind(this));
+gui.add(params, 'speed', 0, 5).onChange(generateShapes.bind(this));
 gui.add(params, 'interval', 0, 10).onChange(generateShapes.bind(this));
 gui.add(params, 'masks', 0, 450).step(1).onChange(generateShapes.bind(this));
+gui.add(params, 'elementsPerLine', 1, 50).step(1).onChange(generateShapes.bind(this));
+gui.add(params, 'spacing', 1, 250).onChange(generateShapes.bind(this));
+
 gui.add(params, 'maxSizeMask', 0, 200).onChange(generateShapes.bind(this));
-gui.add(params, 'debug').onChange(generateShapes.bind(this));
+gui.add(params, 'debug').onChange(toggleMask.bind(this));
 
+function toggleMask()
+{
+    photo2.mask = params.debug ? null : mask;
+}
 
-onResize();
-generateShapes();
-update();
 window.onresize = onResize;
 function onResize(){
     params.W = window.innerWidth;
     params.H = window.innerHeight;
 
-    generateShapes()
-
     renderer.resize(params.W, params.H);
 
     resizeImage(photo1);
     resizeImage(photo2);
+
+    generateShapes();
 }
