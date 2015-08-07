@@ -2,6 +2,7 @@ var dat    = require('dat-gui');
 var Stats  = require('stats-js');
 var PIXI   = require('pixi.js');
 var fit    = require('./libs/fit');
+var Utils = require('utils-perf');
 
 PIXI.utils._saidHello = true;
 
@@ -21,7 +22,14 @@ var GUIParams = function(){
     this.elementsPerLine = 10;
     this.spacing = 10;
     this.debug = false;
+    this.random = false;
 }
+
+var photos = ["_DSC0193.jpg","_DSC0349.jpg","_DSC0495.jpg","DSC_0161.jpg","DSC_0169.jpg","DSC_0174.jpg","DSC_0207.jpg","DSC_0245.jpg","DSC_0252.jpg","DSC_0307.jpg","DSC_0327.jpg","DSC_0416.jpg","DSC_0458-5.jpg","IMG_0039.jpg","IMG_0156.jpg","IMG_0191.jpg","IMG_0294.jpg","IMG_0314.jpg","IMG_0324.jpg","IMG_0327.jpg","IMG_0334.jpg","IMG_0433.jpg","IMG_0478.jpg","IMG_0616.jpg","IMG_0774.jpg","IMG_1018.jpg","IMG_1484.jpg","IMG_1679.jpg","IMG_1848.jpg","IMG_2041.jpg","IMG_2460.jpg"];
+
+randPhoto = "IMG_0334.jpg"
+
+// var randPhoto = photos[Utils.round(Utils.random(0, photos.length))];
 
 var loadingCounter = 0;
 var params = new GUIParams();
@@ -33,11 +41,11 @@ var renderer = PIXI.autoDetectRenderer(params.W, params.H);
 // var renderer = new PIXI.CanvasRenderer(params.W, params.H);
 document.body.appendChild(renderer.view);
 
-var photo1 = PIXI.Sprite.fromImage('photos/bw/DSC_0161.jpg');
+var photo1 = PIXI.Sprite.fromImage('photos/bw/' + randPhoto);
 photo1.texture.baseTexture.on('loaded', loadedImage.bind(this));
 stage.addChild(photo1);
 
-var photo2 = PIXI.Sprite.fromImage('photos/colour/DSC_0161.jpg');
+var photo2 = PIXI.Sprite.fromImage('photos/colour/' + randPhoto);
 photo2.texture.baseTexture.on('loaded', loadedImage.bind(this));
 stage.addChild(photo2);
 
@@ -146,6 +154,7 @@ gui.add(params, 'spacing', 1, 250).onChange(generateShapes.bind(this));
 
 gui.add(params, 'maxSizeMask', 0, 200).onChange(generateShapes.bind(this));
 gui.add(params, 'debug').onChange(toggleMask.bind(this));
+gui.add(params, 'random').onChange(generateShapes.bind(this));
 
 function toggleMask()
 {
