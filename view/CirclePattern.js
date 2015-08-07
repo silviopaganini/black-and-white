@@ -1,4 +1,6 @@
 var Shape = require('./Shape');
+var Utils = require('utils-perf');
+
 var CirclePattern = function(graph, params, index, total, line) {
     Shape.call( this, graph, params, index, total, line );
     this.size = params.maxSizeMask;
@@ -15,7 +17,7 @@ CirclePattern.prototype.draw = function()
     var line = this.total / lineTotal;
 
     var angle = 360 / lineTotal * (this.index % lineTotal);
-    var radians = angle * Math.PI / 180;
+    var radians = Utils.rad(angle);
     var center = {x : this.params.W / 2, y: this.params.H / 2};
 
     var xx = center.x + this.line * this.params.spacing * Math.cos(radians);
