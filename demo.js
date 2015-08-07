@@ -27,9 +27,8 @@ var GUIParams = function(){
 
 var photos = ["_DSC0193.jpg","_DSC0349.jpg","_DSC0495.jpg","DSC_0161.jpg","DSC_0169.jpg","DSC_0174.jpg","DSC_0207.jpg","DSC_0245.jpg","DSC_0252.jpg","DSC_0307.jpg","DSC_0327.jpg","DSC_0416.jpg","DSC_0458-5.jpg","IMG_0039.jpg","IMG_0156.jpg","IMG_0191.jpg","IMG_0294.jpg","IMG_0314.jpg","IMG_0324.jpg","IMG_0327.jpg","IMG_0334.jpg","IMG_0433.jpg","IMG_0478.jpg","IMG_0616.jpg","IMG_0774.jpg","IMG_1018.jpg","IMG_1484.jpg","IMG_1679.jpg","IMG_1848.jpg","IMG_2041.jpg","IMG_2460.jpg"];
 
-randPhoto = "IMG_0334.jpg"
-
-// var randPhoto = photos[Utils.round(Utils.random(0, photos.length))];
+var randPhoto = photos[Utils.round(Utils.random(0, photos.length))];
+if(window.location.href.indexOf('localhost') > -1) randPhoto = "IMG_0334.jpg"
 
 var loadingCounter = 0;
 var params = new GUIParams();
