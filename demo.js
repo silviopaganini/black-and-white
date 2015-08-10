@@ -10,15 +10,16 @@ var Rect            = require('./view/Rect');
 var Circle          = require('./view/Circle');
 var CirclePattern   = require('./view/CirclePattern');
 var TrianglePattern = require('./view/TrianglePattern');
+var CirclePolar     = require('./view/CirclePolar');
 
 var GUIParams = function(){
-    this.speed = 0.1;
-    this.interval = .5;
+    this.speed = 0;
+    this.interval = 0;
     this.masks = 150;
     this.maxSizeMask = 75;
     this.W = window.innerWidth;
     this.H = window.innerHeight;
-    this.selectedShape = "triangles";
+    this.selectedShape = "circlePolar";
     this.elementsPerLine = 10;
     this.spacing = 10;
     this.debug = false;
@@ -98,14 +99,26 @@ function generateShapes()
         case "circle"    : SelectedShape = Circle; break;
         case "pattern"   : SelectedShape = CirclePattern; break;
         case "triangles" : SelectedShape = TrianglePattern; break;
+        case "circlePolar" : SelectedShape = CirclePolar; break;
         
     }
 
     var line = 0;
-    params.totalShapesEven = Math.round(params.W / params.maxSizeMask) * (params.H / params.maxSizeMask);
-    var maxCol = Math.round(params.W / params.maxSizeMask);
+    params.totalShapesEven = (Math.round(params.W / params.maxSizeMask)+1) * (Math.round(params.H / params.maxSizeMask) + 1);
+    var maxCol = Math.round(params.W / params.maxSizeMask) + 1;
 
-    for (i = 0; i < (params.selectedShape == "triangles" ? params.totalShapesEven : params.masks); i++) 
+    var sizeLoop = null
+    switch(params.selectedShape)
+    {
+        case "triangles": 
+            sizeLoop = params.totalShapesEven;
+            break;
+        default : 
+            sizeLoop = params.masks; 
+            break;
+    }
+
+    for (i = 0; i < sizeLoop; i++) 
     {
         var shape = new SelectedShape(mask, params, i, params.masks, line);
         shapes.push(shape);
@@ -144,9 +157,9 @@ function update()
 }
 
 var gui = new dat.GUI()
-gui.add(params, 'selectedShape', ['rect', 'circle', 'pattern', 'triangles']).onChange(generateShapes.bind(this));
-gui.add(params, 'speed', 0, .2).step(.01).onChange(generateShapes.bind(this));
-gui.add(params, 'interval', 0, 1).step(.1).onChange(generateShapes.bind(this));
+gui.add(params, 'selectedShape', ['rect', 'circle','circlePolar', 'pattern', 'triangles']).onChange(generateShapes.bind(this));
+// gui.add(params, 'speed', 0, .2).step(.01).onChange(generateShapes.bind(this));
+// gui.add(params, 'interval', 0, 1).step(.1).onChange(generateShapes.bind(this));
 gui.add(params, 'masks', 0, 450).step(1).onChange(generateShapes.bind(this));
 gui.add(params, 'elementsPerLine', 1, 50).step(1).onChange(generateShapes.bind(this));
 gui.add(params, 'spacing', 1, 250).onChange(generateShapes.bind(this));

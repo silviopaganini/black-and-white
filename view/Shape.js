@@ -20,6 +20,10 @@ var Shape = function(graph, params, index, total, line)
 Shape.prototype.draw = function(){};
 
 Shape.prototype.animateIn = function() {
+    this.draw();
+    
+    return;
+
     TweenMax.from(this, this.params.speed, {
         size: 0, 
         delay: (this.params.interval / 100) * this.index,
