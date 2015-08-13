@@ -10,11 +10,11 @@ export function ajax(data) {
     }
     */
 
-    var X = function(){
+    let X = function(){
         if (typeof XMLHttpRequest !== 'undefined') {
             return new XMLHttpRequest();  
         }
-        var versions = [
+        let versions = [
             "MSXML2.XmlHttp.6.0",
             "MSXML2.XmlHttp.5.0",   
             "MSXML2.XmlHttp.4.0",  
@@ -23,8 +23,8 @@ export function ajax(data) {
             "Microsoft.XmlHttp"
         ];
 
-        var xhr;
-        for(var i = 0; i < versions.length; i++) {  
+        let xhr;
+        for(let i = 0; i < versions.length; i++) {  
             try {  
                 xhr = new ActiveXObject(versions[i]);  
                 break;  
@@ -34,12 +34,12 @@ export function ajax(data) {
         return xhr;
     }
 
-    var xhr = X();
-    var method = data.method || "GET";
+    let xhr = X();
+    let method = data.method || "GET";
     method = method.toUpperCase();
 
-    var send = function(url, method, data, done, fail){
-        console.log(url, method)
+    let send = function(url, method, data, done, fail){
+        console.log(url)
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE ) {
                 if(xhr.status == 200){
@@ -54,16 +54,17 @@ export function ajax(data) {
             }
         }
 
-        if (method == 'POST') {
+        xhr.open(method, url, true);
+
+        if (method != "GET") {
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         }
-
-        xhr.open(method, url, true);
+        
         xhr.send(data);
     }
 
-    var query = [];
-    for (var key in data.data) query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data.data[key]));
+    let query = [];
+    for (let key in data.data) query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data.data[key]));
 
     switch(method)
     {
@@ -71,7 +72,7 @@ export function ajax(data) {
             send(data.url, method, (query.length ? '?' + query.join('&') : ''), data.done, data.fail)
             break;
 
-        case "POST":
+        default:
             send(data.url, method, query.join('&'), data.done, data.fail)
             break;
     }

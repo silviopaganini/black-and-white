@@ -7,7 +7,9 @@ import CirclePolar     from './view/CirclePolar';
 import PIXI            from "pixi.js";
 import fit             from "./libs/fit";
 import Utils           from "utils-perf";
-import {ajax as ajax}  from "./utils/core";
+// import {ajax as ajax}  from "./utils/core";
+
+import Firebase from './utils/Firebase';
 
 PIXI.utils._saidHello = true;
 
@@ -15,6 +17,7 @@ class Main
 {
   constructor(params, callback) 
   {
+    this.UID = "blinding-torch-6748";
     this.params         = params;
     this.photos         = null;
     this.currentPhoto   = null;
@@ -28,17 +31,21 @@ class Main
 
   loadDB()
   {
-    ajax({
-        url: "https://blinding-torch-6748.firebaseio.com/rest/photos.json",
-        done: function(e){
-            this.photos = JSON.parse(e);
-            this.init();
-        }.bind(this)
-    });
+    this.db = new Firebase(this.UID);
+    this.db.get('photos/', function(e){
+      this.photos = e;
+      this.init();
+    }.bind(this))
   }
 
   init()
   {
+    this.db.votePhotoID(1, "color", function(){
+      console.log("all good")
+    });
+
+    return
+
     this.createRenderer();
     this.loadPictures();
     this.toggleMask();
