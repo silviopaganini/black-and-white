@@ -12,6 +12,7 @@ class Main
   {
     this.UID          = "blinding-torch-6748";
     this.params       = params;
+    this.CDN          = null;
     this.photos       = null;
     this.currentPhoto = null;
     this.callback     = callback;
@@ -22,10 +23,22 @@ class Main
   loadDB()
   {
     this.db = new Firebase(this.UID);
-    this.db.get('photos/', function(e){
-      this.photos = e;
-      this.init();
-    }.bind(this))
+    this.db.get('cdnURL/', function(e)
+    {
+
+      this.CDN = window.location.href.indexOf('localhost') > -1 ? 'static/photos/' : e;
+
+      this.db.get('photos/', function(e)
+      {
+
+        this.photos = e;
+        this.photos.forEach(function(e){ e.url = this.CDN + "{x}/" + e.url; }.bind(this));
+        this.init();
+
+      }.bind(this));
+
+    }.bind(this));
+
   }
 
   init()
@@ -49,11 +62,6 @@ class Main
     var randPhoto = this.photos[Utils.round(Utils.random(0, this.photos.length))];
     // if(window.location.href.indexOf('localhost') > -1) randPhoto = "IMG_0334.jpg";
     return randPhoto;
-  }
-
-  getPhotoURL(colour, photo)
-  {
-    return window.config.CDN + window.config.PATH + colour + "/" + photo;
   }
 
   resize()

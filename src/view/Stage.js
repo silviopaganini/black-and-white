@@ -31,10 +31,7 @@ class Stage  {
     this.stage.addChild(this.mask);
   }
 
-  getPhotoURL(colour, photo)
-  {
-    return window.config.CDN + window.config.PATH + colour + "/" + photo;
-  }
+  getPhotoURL(colour, photo) { return photo.split("{x}").join(colour); }
 
   toggleMask()
   {
