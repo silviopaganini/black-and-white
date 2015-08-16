@@ -26,7 +26,7 @@ class Main
     this.db.get('cdnURL/', function(e)
     {
 
-      this.CDN = window.location.href.indexOf('localhost') > -1 ? 'static/photos/' : e;
+      this.CDN = window.location.href.indexOf('localhost') > -1 || window.location.href.indexOf('bw.fluuu.id') > -1 ? 'static/photos/' : e;
 
       this.db.get('photos/', function(e)
       {
