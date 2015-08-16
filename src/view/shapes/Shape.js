@@ -24,4 +24,4 @@ class Shape {
     }
 }
 
-module.exports = Shape
+export default Shape

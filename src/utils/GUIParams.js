@@ -16,4 +16,4 @@ class GUIParams
     }
 }
 
-module.exports = GUIParams;
+export default GUIParams;

@@ -1,7 +1,9 @@
-class FirebaseDB {
-  constructor(firebaseID) {
+class FirebaseDB 
+{
+
+  constructor(firebaseID) 
+  {
     this.firebase = new Firebase("https://"+firebaseID+".firebaseio.com");
-    console.log(this.firebase)
   }
 
   get(key, callback)
@@ -10,6 +12,14 @@ class FirebaseDB {
         callback(e.val());
     });
   }
+
+  /*
+
+  this.db.votePhotoID(1, "color", function(){
+    console.log("all good")
+  });
+
+  */
 
   votePhotoID(photoID, type, callback)
   {
@@ -26,4 +36,4 @@ class FirebaseDB {
   }
 }
 
-module.exports = FirebaseDB;
+export default FirebaseDB;

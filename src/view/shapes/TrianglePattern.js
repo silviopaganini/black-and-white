@@ -34,4 +34,4 @@ class TrianglePattern extends Shape {
   }
 }
 
-module.exports = TrianglePattern;
+export default TrianglePattern;

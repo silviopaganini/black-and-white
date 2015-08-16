@@ -13,4 +13,4 @@ class Rect extends Shape {
     }
 }
 
-module.exports = Rect;
+export default Rect;

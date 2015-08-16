@@ -26,5 +26,5 @@ class CirclePolar extends Shape {
     }
 }
 
-module.exports = CirclePolar;
+export default CirclePolar;
 

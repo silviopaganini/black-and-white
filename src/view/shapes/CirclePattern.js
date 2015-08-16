@@ -27,4 +27,4 @@ class CirclePattern extends Shape {
   }
 }
 
-module.exports = CirclePattern;
+export default CirclePattern;
