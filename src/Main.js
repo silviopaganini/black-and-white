@@ -2,7 +2,9 @@ import Firebase from './utils/Firebase';
 import Wrapper  from './view/Wrapper';
 import Stage    from './view/Stage';
 import Utils    from "utils-perf";
+import UI       from "./view/UI";
 import ee       from 'event-emitter';
+
 
 PIXI.utils._saidHello = true;
 
@@ -16,6 +18,9 @@ class Main
     this.photos       = null;
     this.currentPhoto = null;
     this.callback     = callback;
+    
+    this.ui           = new UI();
+
     this.loadDB();
 
   }
@@ -45,10 +50,16 @@ class Main
   {
     this.wrapper = new Wrapper();
     this.stage = new Stage(this.params);
-    this.stage.ee.once('completeLoading', this.callback);
+    this.stage.ee.once('completeLoading', this.onCompleteLoading.bind(this));
 
     this.wrapper.add(this.stage.domElement);
     this.stage.loadPictures( this.getRandomPhoto() );
+  }
+
+  onCompleteLoading()
+  {
+    this.stage.createIntro();
+    this.callback()
   }
 
   render(params)

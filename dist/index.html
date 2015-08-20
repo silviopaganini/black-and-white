@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Black and White</title>
-    <link rel="stylesheet" type="text/css" href="static/css/normalise.css">
     <meta name="robots" content="all" />
     <meta name="description" content="FLUUUID is a collective of developers, designers and creative technologists striving for cutting edge experiences online and offline.">
     <meta name="keywords" content="interactive, design, development, collective, kinect, studio, production, Flash, AS3, HTML, HTML5, openFrameworks, creative coding, WebGL, processing, installation, art, technology, UK, London" />
@@ -26,35 +25,39 @@
     <link rel="apple-touch-icon" sizes="120x120" href="http://fluuu.id/apple-touch-icon-120x120.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="http://fluuu.id/apple-touch-icon-144x144.png" />
     <link rel="apple-touch-icon" sizes="152x152" href="http://fluuu.id/apple-touch-icon-152x152.png" />
-    
-    <style type="text/css">
-    body
-    {
-        font-family: monospace;
-        overflow: hidden;
-    }
-    .credits
-    {
-        font-size: 11px;
-        position: absolute;
-        bottom: 0;
-        left: 20px;
-        color: white;
-        text-align: left;
-    }
-    a
-    {
-        color: white;
-    }
-    </style>
+
+    <link rel="stylesheet" type="text/css" href="static/css/main.css">
 </head>
 <body>
+    <div id="wrapper">
+        <div id="canvas-container"></div>
+        <div class="logos">
+            <div class="logo" data-type="black-and-white"><img src="static/img/logo-bw.png"></div>
+            <div class="logo"><img src="static/img/vs.png"></div>
+            <div class="logo" data-type="colour"><img src="static/img/logo-colour.png"></div>
+        </div>
+        <h1>An interactive experience to know your opinion about images.</h1>
+        <div class="button-container">
+            <button>Start</button>
+        </div>
+    </div>
+
+    <nav>&#9776;</nav>
+
+    <div id="about">
+        <h2>About</h2>
+        <p>Bacon ipsum dolor amet sirloin capicola drumstick prosciutto pastrami doner. Bacon pancetta corned beef, short loin shank picanha flank sausage meatball swine. Picanha ham hock short ribs prosciutto jowl, shoulder ham alcatra fatback brisket. Filet mignon jowl spare ribs, rump chicken porchetta ball tip. Beef ribs chicken shankle andouille shank shoulder short ribs.</p>
+        <p>Sincerly,</p>
+        <p>Ronaldo Tavares</p>
+        <div class="contact">
+            <a href="mailto:tavares.ronaldo@gmail.com">tavares.ronaldo@gmail.com</a><br>
+            <a href="http://instagram.com/ronaldotavares" target="_blank">instagram.com/ronaldotavares</a>
+        </div>
+    </div>
+
     <script src="https://cdn.firebase.com/js/client/2.2.9/firebase.js"></script>
     <script src="js/bundle.js"></script>
 
-    <div id="wrapper">
-        <div id="canvas-container"></div>
-    </div>
 </body>
 
 </html>

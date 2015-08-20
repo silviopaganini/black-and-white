@@ -3,6 +3,7 @@ import Circle          from "./shapes/Circle";
 import CirclePattern   from './shapes/CirclePattern';
 import TrianglePattern from './shapes/TrianglePattern';
 import CirclePolar     from './shapes/CirclePolar';
+import Fifty           from './shapes/Fifty';
 
 import PIXI            from "pixi.js";
 import fit             from "./../libs/fit";
@@ -64,7 +65,6 @@ class Stage  {
   {
     this.toggleMask();
     this.ee.emit('completeLoading');
-    this.generateShapes();
   }
 
   resize()
@@ -97,10 +97,19 @@ class Stage  {
       image.y = r.ty;
   }
 
+  createIntro()
+  {
+    for (let i = 0; i < this.shapes.length; i++) this.shapes[i].kill();
+    this.clearMask();
+
+    let shape = new Fifty(this.mask, this.params, 0, this.params.masks, 0);
+    this.shapes.push(shape);
+    shape.animateIn();
+  }
+
   generateShapes()
   {
       let i = 0;
-
       for (i = 0; i < this.shapes.length; i++) this.shapes[i].kill();
 
       this.clearMask();

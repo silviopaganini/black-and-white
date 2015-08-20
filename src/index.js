@@ -7,13 +7,50 @@ import ajax      from './utils/core';
 var params = new GUIParams();
 var gui = null;
 
+// var data = {
+//     cdn_url : '//static.fluuu.id/photos/',
+//     photos : [
+//         {url : "_DSC0193.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "_DSC0349.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "_DSC0495.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0161.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0169.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0174.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0207.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0245.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0252.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0307.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0327.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0416.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "DSC_0458-5.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0039.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0156.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0191.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0294.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0314.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0324.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0327.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0334.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0433.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0478.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0616.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_0774.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_1018.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_1484.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_1679.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_1848.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_2041.jpg", votes: {bw: 0, colour: 0}},
+//         {url : "IMG_2460.jpg", votes: {bw: 0, colour: 0}}
+//     ]
+// }
+
 var stats = new Stats(); 
 stats.domElement.style.position = 'absolute';
 document.body.appendChild(stats.domElement);
 
 const main = new Main(params, function(){
     onResize();
-    startGUI()
+    // startGUI()
     update();
 });
 
@@ -49,5 +86,5 @@ function onResize(){
     main.stage.renderer.resize(params.W, params.H);
 
     main.resize();
-    main.stage.generateShapes();
+    // main.stage.generateShapes();
 }
