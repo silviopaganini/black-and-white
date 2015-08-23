@@ -46,7 +46,7 @@ var gui = null;
 
 var stats = new Stats(); 
 stats.domElement.style.position = 'absolute';
-document.body.appendChild(stats.domElement);
+// document.body.appendChild(stats.domElement);
 
 const main = new Main(params, function(){
     onResize();
