@@ -78,13 +78,11 @@ function startGUI()
 }
 
 window.onresize = onResize;
+window.onmousemove = main.onMouseMove.bind(main);
 
 function onResize(){
     params.W = window.innerWidth;
     params.H = window.innerHeight;
 
-    main.stage.renderer.resize(params.W, params.H);
-
-    main.resize();
-    // main.stage.generateShapes();
+    main.resize(params.W, params.H);
 }

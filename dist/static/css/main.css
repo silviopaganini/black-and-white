@@ -41,12 +41,19 @@ body
     display: table-cell;
     vertical-align: middle;
     width: 45%;
-    padding: 0 20px;
+}
+
+.logos .logo:first-child{
+    padding-right: 5%;
+}
+
+.logos .logo:last-child{
+    padding-left: 5%;
 }
 
 .logos .logo:nth-child(2)
 {
-    width: 5%;
+    width: 10%;
     text-align: center;
 }
 
@@ -60,7 +67,7 @@ body
 
 .logos .logo:nth-child(2) img
 {
-    width: 100%;
+    width: 50%;
 }
 
 /* h1 */
@@ -129,6 +136,12 @@ nav
     transition: all .3s;
 }
 
+nav img
+{
+    width: 44px;
+    height: 34px;
+}
+
 nav:hover
 {
     opacity: .5;
@@ -178,7 +191,133 @@ nav.opened
     bottom: 13%;
 }
 
+.hearts
+{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: table;
+    pointer-events: none;
+}
+
+.hide
+{
+    display: none;
+}
+
+.hearts .heart
+{
+    width: 50%;
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0;
+
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+
+    -webkit-transition: all .3s; /* Safari */
+    transition: all .3s;
+}
+
+.hearts .heart svg
+{
+    width: 35%;
+    stroke: rgba(255, 255, 255, .2);
+    stroke-width: 2;
+}
+
+.scoreLine
+{
+    position: absolute;
+    width: 30vw;
+    bottom: 0;
+    display: table;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+
+    -webkit-transition: all .3s; /* Safari */
+    transition: all .3s;
+
+    opacity: 0;
+}
+
+.score-animate-in
+{
+    opacity: 1;
+    bottom: 10px;
+}
+
+.scoreLine div
+{
+    display: table-cell;
+    width: 25%;
+    padding: 0 10px;
+}
+
+.scoreLine div:first-child
+{
+    width: 10%;   
+}
+
+.scoreLine div:last-child
+{
+    width: 10%;   
+}
+
+.scoreLine div:nth-child(3)
+{
+    width: 10%;
+}
+
 /* global animation */
+
+.animate-in-heart
+{
+    -webkit-transform: translateY(0px) !important;
+    transform: translateY(0px) !important;
+    cursor: pointer;
+    pointer-events: visible;
+    opacity: 1 !important;
+}
+
+@keyframes heartAnimationVote
+{
+    0%{
+        -webkit-transform: translateY(0px) !important;
+        transform: translateY(0px) !important;
+        cursor: none;
+        pointer-events: none;
+        opacity: 1 !important;
+    }
+    25%{
+        fill: red;
+        -webkit-transform: scale(1.5) !important;
+        transform: scale(1.5) !important;
+        opacity: 1 !important;
+    }
+    100%{
+       -webkit-transform: scale(.5) !important;
+        transform: scale(.5) !important;
+        opacity: 0 !important; 
+    }
+}
+
+.animate-heart-vote
+{
+    animation-name: heartAnimationVote;
+    animation-duration: .6s;
+    cursor: auto;
+    pointer-events: none;
+    opacity: 0 !important;
+}
+
+.animate-heart-vote svg
+{
+    stroke: none;
+}
 
 .animate-out
 {
@@ -187,6 +326,6 @@ nav.opened
     transition: all .3s;
 
     opacity: 0;
-    -webkit-transform: translateY(0px);
+    -webkit-transform: translateY(10px);
     transform: translateY(10px);
 }

@@ -8,7 +8,7 @@ class GUIParams
         this.maxSizeMask = 75;
         this.W = window.innerWidth;
         this.H = window.innerHeight;
-        this.selectedShape = "circlePolar";
+        this.selectedShape = "triangles";
         this.elementsPerLine = 10;
         this.spacing = 10;
         this.debug = false;

@@ -13,14 +13,6 @@ class FirebaseDB
     });
   }
 
-  /*
-
-  this.db.votePhotoID(1, "color", function(){
-    console.log("all good")
-  });
-
-  */
-
   votePhotoID(photoID, type, callback)
   {
     this.firebase.child('photos/' + photoID + "/votes/" + type).transaction(function(current_value){

@@ -2,21 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Black and White</title>
+    <title>Black and White VS. Colour</title>
     <meta name="robots" content="all" />
-    <meta name="description" content="FLUUUID is a collective of developers, designers and creative technologists striving for cutting edge experiences online and offline.">
+
+    <!-- <meta name="description" content="FLUUUID is a collective of developers, designers and creative technologists striving for cutting edge experiences online and offline.">
     <meta name="keywords" content="interactive, design, development, collective, kinect, studio, production, Flash, AS3, HTML, HTML5, openFrameworks, creative coding, WebGL, processing, installation, art, technology, UK, London" />
     <meta name="copyright" content="FLUUUID" />
-    <meta name="contact" content="heeey@fluuu.id" />
+    <meta name="contact" content="heeey@fluuu.id" /> -->
 
-    <meta property="og:url" content="http://fluuu.id" />
+    <!-- <meta property="og:url" content="http://fluuu.id" />
     <meta property="og:image" content="http://fluuu.id/apple-touch-icon-152x152.png"/>
     <meta property="og:site_name" content="fluuu.id" />
     <meta property="og:title" content="FLUUUID | london digital creative collective" />
     <meta property="og:type" content="website" />
-    <meta property="og:description" content="FLUUUID is a collective of developers, designers and creative technologists striving for cutting edge experiences online and offline." />
+    <meta property="og:description" content="FLUUUID is a collective of developers, designers and creative technologists striving for cutting edge experiences online and offline." /> -->
 
-    <link rel="shortcut icon" href="http://fluuu.id/favicon.ico" type="image/x-icon" />
+    <!-- <link rel="shortcut icon" href="http://fluuu.id/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="http://fluuu.id/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="57x57" href="http://fluuu.id/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="http://fluuu.id/apple-touch-icon-72x72.png" />
@@ -24,7 +25,7 @@
     <link rel="apple-touch-icon" sizes="114x114" href="http://fluuu.id/apple-touch-icon-114x114.png" />
     <link rel="apple-touch-icon" sizes="120x120" href="http://fluuu.id/apple-touch-icon-120x120.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="http://fluuu.id/apple-touch-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="http://fluuu.id/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="http://fluuu.id/apple-touch-icon-152x152.png" /> -->
 
     <link rel="stylesheet" type="text/css" href="static/css/main.css">
 </head>
@@ -32,13 +33,26 @@
     <div id="wrapper">
         <div id="canvas-container"></div>
         <div class="logos">
-            <div class="logo" data-type="black-and-white"><img src="static/img/logo-bw.png"></div>
-            <div class="logo"><img src="static/img/vs.png"></div>
-            <div class="logo" data-type="colour"><img src="static/img/logo-colour.png"></div>
+            <div class="logo" data-type="black-and-white"><img src="static/img/logo-bw.svg"></div>
+            <div class="logo"><img src="static/img/vs.svg"></div>
+            <div class="logo" data-type="colour"><img src="static/img/logo-colour.svg"></div>
         </div>
         <h1>An interactive experience to know your opinion about images.</h1>
         <div class="button-container">
             <button>Start</button>
+        </div>
+
+        <div class="hearts">
+            <div class='heart' data-side="bw"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="imgView" x="0px" y="0px" viewBox="0 0 492.719 492.719" style="enable-background:new 0 0 492.719 492.719;" xml:space="preserve" class="detail convertSvgInline replaced-svg" width="256px" height="256px" data-id="69904" data-kw="heart13"><g>    <g id="Icons_18_">        <path d="M492.719,166.008c0-73.486-59.573-133.056-133.059-133.056c-47.985,0-89.891,25.484-113.302,63.569    c-23.408-38.085-65.332-63.569-113.316-63.569C59.556,32.952,0,92.522,0,166.008c0,40.009,17.729,75.803,45.671,100.178    l188.545,188.553c3.22,3.22,7.587,5.029,12.142,5.029c4.555,0,8.922-1.809,12.142-5.029l188.545-188.553    C474.988,241.811,492.719,206.017,492.719,166.008z"></path></g></g></svg></div>
+            <div class='heart' data-side="colour"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="imgView" x="0px" y="0px" viewBox="0 0 492.719 492.719" style="enable-background:new 0 0 492.719 492.719;" xml:space="preserve" class="detail convertSvgInline replaced-svg" width="256px" height="256px" data-id="69904" data-kw="heart13"><g>    <g id="Icons_18_">        <path d="M492.719,166.008c0-73.486-59.573-133.056-133.059-133.056c-47.985,0-89.891,25.484-113.302,63.569    c-23.408-38.085-65.332-63.569-113.316-63.569C59.556,32.952,0,92.522,0,166.008c0,40.009,17.729,75.803,45.671,100.178    l188.545,188.553c3.22,3.22,7.587,5.029,12.142,5.029c4.555,0,8.922-1.809,12.142-5.029l188.545-188.553    C474.988,241.811,492.719,206.017,492.719,166.008z"></path></g></g></svg></div>
+        </div>
+
+        <div class="scoreLine">
+            <div class="score-text" data-type="bw">10%</div>
+            <div class="logo"><img src="static/img/logo-bw.svg"></div>
+            <div class="logo"><img src="static/img/vs.svg"></div>
+            <div class="logo"><img src="static/img/logo-colour.svg"></div>
+            <div class="score-text" data-type="colour">90%</div>
         </div>
     </div>
 

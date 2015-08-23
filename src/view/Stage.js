@@ -18,7 +18,7 @@ class Stage  {
     this.mask     = new PIXI.Graphics();
     this.params   = params;
     this.shapes   = [];
-
+    
     this.currentPhoto   = null;
     this.photo1         = null;
     this.photo2         = null;
@@ -71,10 +71,18 @@ class Stage  {
   {
     this.resizeImage(this.photo1);
     this.resizeImage(this.photo2);
+
+    if(this.params.state == 2)
+    {
+      this.generateShapes();
+    } else {
+      this.createIntro();
+    }
   }
 
-  render()
+  render(params)
   {
+    this.params = params;
     this.renderer.render(this.stage);
   }
 
@@ -95,6 +103,11 @@ class Stage  {
       image.height = r.height;
       image.x = r.tx;
       image.y = r.ty;
+  }
+
+  animateSide(whichSide, cb)
+  {
+    this.shapes[0].animateSide(whichSide, cb);
   }
 
   createIntro()
