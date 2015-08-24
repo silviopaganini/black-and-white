@@ -1,5 +1,4 @@
 import Firebase from './utils/Firebase';
-import Wrapper  from './view/Wrapper';
 import Stage    from './view/Stage';
 import Utils    from "utils-perf";
 import UI       from "./view/UI";
@@ -28,25 +27,15 @@ class Main
 
   }
 
-  vote(e)
+  init()
   {
-    this.ui.heartVoteAnim(e);
-    this.db.votePhotoID(this.currentPhoto.index, e, function(e){
-      this.params.state = 0;
-      this.ui.hideHearts();
+    this.stage = new Stage(this.params);
+    this.stage.ee.on('completeLoading', this.onCompleteLoading.bind(this));
 
-      this.db.get('photos/' + this.currentPhoto.index + "/votes/", function(e)
-      {
-        this.ui.score.update(e);
-        this.stage.animateSide(1, this.stage.generateShapes.bind(this.stage));
-      }.bind(this));
+    this.currentPhoto = this.getRandomPhoto();
 
-    }.bind(this));
-  }
-
-  startVoting()
-  {
-    this.params.state = 1;
+    this.ui.wrapper.insertBefore(this.stage.domElement, this.ui.wrapper.firstChild);
+    this.stage.loadPictures( this.currentPhoto.photo );
   }
 
   loadDB()
@@ -68,20 +57,44 @@ class Main
 
   }
 
-  init()
+  /*
+  methods
+  */
+
+  restart()
   {
-    this.wrapper = new Wrapper();
-    this.stage = new Stage(this.params);
-    this.stage.ee.once('completeLoading', this.onCompleteLoading.bind(this));
-
+    console.log('asdasd')
     this.currentPhoto = this.getRandomPhoto();
-
-    this.wrapper.add(this.stage.domElement);
     this.stage.loadPictures( this.currentPhoto.photo );
+  }
+
+  vote(e)
+  {
+    this.ui.heartVoteAnim(e);
+    this.db.votePhotoID(this.currentPhoto.index, e, function(e){
+      this.params.state = 0;
+      this.ui.hideHearts();
+
+      this.db.get('photos/' + this.currentPhoto.index + "/votes/", this.votingComplete.bind(this));
+
+    }.bind(this));
+  }
+
+  votingComplete(e)
+  {
+    this.ui.score.update(e);
+    this.stage.animateSide(1, this.stage.generateShapes.bind(this.stage));
+    setTimeout(this.restart.bind(this), 2000);
+  }
+
+  startVoting()
+  {
+    this.params.state = 1;
   }
 
   onCompleteLoading()
   {
+    this.ui.animateInIntro();
     this.stage.createIntro();
     this.callback()
   }

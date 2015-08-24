@@ -9,6 +9,8 @@ class UI {
     this.logos       = document.querySelector('.logos');
     this.h1          = document.getElementsByTagName('h1')[0];
     this.aboutPage   = document.getElementById('about');
+    this.wrapper     = document.getElementsByTagName('main')[0];
+    this.loading     = document.getElementsByClassName('loading-container')[0];
     
     this.heartLeft   = document.getElementsByClassName('heart')[0];
     this.heartRight  = document.getElementsByClassName('heart')[1];
@@ -24,6 +26,43 @@ class UI {
 
     this.nav.addEventListener('click', this.onNavClick.bind(this), false);
     this.startButton.addEventListener('click', this.onStartClick.bind(this), false);
+
+    for (var i = 0; i < this.wrapper.children.length; i++) {
+      this.wrapper.children[i].classList.add('animate-divs-main');
+    };
+  }
+
+  animateInIntro()
+  {
+    this.loading.classList.add('animate-out');
+
+    setTimeout( () => {
+
+      this.wrapper.classList.add('animate-in-main');
+
+      setTimeout( () => {
+
+        this.loopIntroMain();
+        this.nav.classList.add('animate-in-nav');
+
+      }.bind(this), 300);
+
+    }.bind(this), 1000);
+    
+  }
+
+  loopIntroMain()
+  {
+    for (var i = 0; i < this.wrapper.children.length; i++) {
+      this.animateObjectIn(this.wrapper.children[i], 100 * i);
+    }
+  }
+
+  animateObjectIn(object, time)
+  {
+    setTimeout( () => {
+      object.classList.add('animate-in-divs-main');  
+    }.bind(this), time)
   }
 
   hideHearts()
