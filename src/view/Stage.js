@@ -43,6 +43,10 @@ class Stage  {
   {
     this.currentPhoto = photo;
 
+    for (var i = this.stage.children.length - 1; i >= 0; i--) {
+      this.stage.removeChild(this.stage.children[i]);
+    };
+
     this.photo1 = PIXI.Sprite.fromImage(this.getPhotoURL('bw', this.currentPhoto.url));
     this.photo1.texture.baseTexture.on('loaded', this.loadedImage.bind(this));
     this.stage.addChildAt(this.photo1, 0);
@@ -57,6 +61,7 @@ class Stage  {
       this.loadingCounter++;
       if(this.loadingCounter == 2)
       {
+          this.loadingCounter = 0;
           this.onLoadComplete();
       }
   }
@@ -114,6 +119,8 @@ class Stage  {
   {
     for (let i = 0; i < this.shapes.length; i++) this.shapes[i].kill();
     this.clearMask();
+
+    this.shapes = [];
 
     let shape = new Fifty(this.mask, this.params, 0, this.params.masks, 0);
     this.shapes.push(shape);

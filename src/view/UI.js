@@ -34,6 +34,7 @@ class UI {
 
   animateInIntro()
   {
+    this.score.close();
     this.loading.classList.add('animate-out');
 
     setTimeout( () => {
@@ -65,9 +66,15 @@ class UI {
     }.bind(this), time)
   }
 
-  hideHearts()
+  hideHearts(val = true)
   {
-    this.hearts.classList.add('hide');
+    this.heartLeft.classList.remove('animate-heart-vote');
+    this.heartLeft.classList.remove('animate-in-heart');
+
+    this.heartRight.classList.remove('animate-heart-vote');
+    this.heartRight.classList.remove('animate-in-heart');
+
+    this.hearts.classList[val ? "add" : "remove"]('hide');
   }
 
   onHeartClick(e)
@@ -131,7 +138,7 @@ class UI {
     this.aboutPage.classList.toggle('opened');
     this.nav.classList.toggle('opened');
 
-    document.getElementById('wrapper').classList.toggle('opened');
+    this.wrapper.classList.toggle('opened');
   }
 
   animateOut()

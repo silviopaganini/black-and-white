@@ -18,6 +18,7 @@ class Main
     this.currentPhoto = null;
     this.callback     = callback;
     this.params.state = 0;
+    this.first = true;
     
     this.ui           = new UI();
     this.ui.ee.once('startVoting', this.startVoting.bind(this));
@@ -63,7 +64,6 @@ class Main
 
   restart()
   {
-    console.log('asdasd')
     this.currentPhoto = this.getRandomPhoto();
     this.stage.loadPictures( this.currentPhoto.photo );
   }
@@ -94,9 +94,18 @@ class Main
 
   onCompleteLoading()
   {
-    this.ui.animateInIntro();
     this.stage.createIntro();
-    this.callback()
+
+    if(this.first)
+    {
+      this.ui.animateInIntro();
+      this.first = false;
+      this.callback();
+    } else {
+      this.stage.resize();
+      this.startVoting();
+      this.ui.hideHearts(false);
+    }
   }
 
   render(params)
