@@ -24,7 +24,7 @@
     "gsap": "^1.17.0",
     "pixi.js": "^3.0.7",
     "stats-js": "^1.0.0-alpha1",
-    "utils-perf": "^1.0.0",
+    "utils-perf": "^1.0.21",
     "watchify": "^3.2.3"
   },
   "main": "src/index.js",

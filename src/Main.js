@@ -4,7 +4,6 @@ import Utils    from "utils-perf";
 import UI       from "./view/UI";
 import ee       from 'event-emitter';
 
-
 PIXI.utils._saidHello = true;
 
 class Main 
@@ -19,8 +18,9 @@ class Main
     this.callback     = callback;
     this.params.state = 0;
     this.first = true;
-    
-    this.ui           = new UI();
+    this.nextPhoto = 0;
+
+    this.ui = new UI();
     this.ui.ee.once('startVoting', this.startVoting.bind(this));
     this.ui.ee.on('vote', this.vote.bind(this));
 
@@ -33,7 +33,9 @@ class Main
     this.stage = new Stage(this.params);
     this.stage.ee.on('completeLoading', this.onCompleteLoading.bind(this));
 
-    this.currentPhoto = this.getRandomPhoto();
+    this.photos = Utils.randomArray(this.photos);
+
+    this.currentPhoto = this.getNextPhoto();
 
     this.ui.wrapper.insertBefore(this.stage.domElement, this.ui.wrapper.firstChild);
     this.stage.loadPictures( this.currentPhoto.photo );
@@ -49,7 +51,7 @@ class Main
       this.db.get('photos/', function(e)
       {
         this.photos = e;
-        this.photos.forEach(function(e){ e.url = this.CDN + "{x}/" + e.url; }.bind(this));
+        this.photos.forEach(function(e, i){ e.index = i; e.url = this.CDN + "{x}/" + e.url; }.bind(this));
         this.init();
 
       }.bind(this));
@@ -64,7 +66,9 @@ class Main
 
   restart()
   {
-    this.currentPhoto = this.getRandomPhoto();
+    this.ui.loadingAnimate(true);
+    this.ui.score.close();
+    this.currentPhoto = this.getNextPhoto();
     this.stage.loadPictures( this.currentPhoto.photo );
   }
 
@@ -74,7 +78,6 @@ class Main
     this.db.votePhotoID(this.currentPhoto.index, e, function(e){
       this.params.state = 0;
       this.ui.hideHearts();
-
       this.db.get('photos/' + this.currentPhoto.index + "/votes/", this.votingComplete.bind(this));
 
     }.bind(this));
@@ -102,7 +105,7 @@ class Main
       this.first = false;
       this.callback();
     } else {
-      this.stage.resize();
+      this.ui.loadingAnimate(false);
       this.startVoting();
       this.ui.hideHearts(false);
     }
@@ -141,12 +144,12 @@ class Main
 
   }
 
-  getRandomPhoto()
+  getNextPhoto()
   {
-    var index = Utils.round(Utils.random(0, this.photos.length));
-    var randPhoto = this.photos[index];
-    // if(window.location.href.indexOf('localhost') > -1) randPhoto = "IMG_0334.jpg";
-    return {index: index, photo: randPhoto};
+    var randPhoto = this.photos[this.nextPhoto];
+    this.nextPhoto++;
+    this.nextPhoto %= this.photos.length-1; 
+    return {index: randPhoto.index, photo: randPhoto};
   }
 
   resize(w, h)

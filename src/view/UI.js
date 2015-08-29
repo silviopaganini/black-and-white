@@ -17,6 +17,8 @@ class UI {
 
     this.hearts = document.getElementsByClassName('hearts')[0];
 
+    this.animateEls = [];
+
     this.score = new ScoreLine();
 
     this.ee = ee({});
@@ -28,8 +30,17 @@ class UI {
     this.startButton.addEventListener('click', this.onStartClick.bind(this), false);
 
     for (var i = 0; i < this.wrapper.children.length; i++) {
-      this.wrapper.children[i].classList.add('animate-divs-main');
-    };
+      if(this.wrapper.children[i].classList[0] != 'scoreLine-container')
+      {
+        this.animateEls.push(this.wrapper.children[i]);
+        this.wrapper.children[i].classList.add('animate-divs-main');
+      }
+    }
+  }
+
+  loadingAnimate(out = true)
+  {
+    this.loading.classList[out ? 'remove' : 'add']('animate-out');
   }
 
   animateInIntro()
@@ -54,8 +65,8 @@ class UI {
 
   loopIntroMain()
   {
-    for (var i = 0; i < this.wrapper.children.length; i++) {
-      this.animateObjectIn(this.wrapper.children[i], 100 * i);
+    for (var i = 0; i < this.animateEls.length; i++) {
+      this.animateObjectIn(this.animateEls[i], 100 * i);
     }
   }
 

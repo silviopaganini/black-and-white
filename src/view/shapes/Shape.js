@@ -19,6 +19,8 @@ class Shape {
         this.draw();    
     }
 
+    resize(){}
+
     kill(){
 
     }

@@ -5,17 +5,18 @@ class Fifty extends Shape {
 
     draw()
     {
-        this.currentSize = 0;
-        this.counter = {val : this.params.W / 2};
-
-        this.graph.beginFill(0xFFFFFF);
-        this.graph.moveTo(this.params.W / 2, 0);
-        this.graph.drawRect(this.params.W / 2, 0, this.params.W / 2, this.params.H);
+        this.currentSize = -1;
+        this.counter = {val : 0};
+        this.animateSide(0);
     }
 
-    animateSide(side, cb)
+    resize(){
+        this.animateSide(this.currentSize, null, false);
+    }
+
+    animateSide(side, cb, force = false)
     {
-        if(side == this.currentSize) return;
+        if(side == this.currentSize && !force) return;
 
         this.currentSize = side;
         let MOVE_TO;

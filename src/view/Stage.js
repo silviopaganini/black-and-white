@@ -18,12 +18,15 @@ class Stage  {
     this.mask     = new PIXI.Graphics();
     this.params   = params;
     this.shapes   = [];
+
+    this.prevPic1       = null;
+    this.prevPic2       = null;
     
     this.currentPhoto   = null;
     this.photo1         = null;
     this.photo2         = null;
     this.loadingCounter = 0;
-    this.ee = ee({});
+    this.ee             = ee({});
 
     this.stage      = new PIXI.Container();
     this.renderer   = PIXI.autoDetectRenderer(params.W, params.H);
@@ -32,7 +35,7 @@ class Stage  {
     this.stage.addChild(this.mask);
   }
 
-  getPhotoURL(colour, photo) { return photo.split("{x}").join(colour); }
+  getPhotoURL(colour, photo) { return photo.split("{x}").join(colour) + "?r=" + Utils.round(Utils.random(9999)); }
 
   toggleMask()
   {
@@ -43,9 +46,15 @@ class Stage  {
   {
     this.currentPhoto = photo;
 
-    for (var i = this.stage.children.length - 1; i >= 0; i--) {
-      this.stage.removeChild(this.stage.children[i]);
-    };
+    // for (var i = this.stage.children.length - 1; i >= 0; i--) {
+    //   this.stage.removeChild(this.stage.children[i]);
+    // };
+
+    if(this.photo1 && this.photo2)
+    {
+      this.prevPic1 = this.photo1;
+      this.prevPic2 = this.photo2;
+    }
 
     this.photo1 = PIXI.Sprite.fromImage(this.getPhotoURL('bw', this.currentPhoto.url));
     this.photo1.texture.baseTexture.on('loaded', this.loadedImage.bind(this));
@@ -59,16 +68,42 @@ class Stage  {
   loadedImage()
   {
       this.loadingCounter++;
+
       if(this.loadingCounter == 2)
       {
           this.loadingCounter = 0;
-          this.onLoadComplete();
+
+          this.resizeImage(this.photo1);
+          this.resizeImage(this.photo2);
+
+          if(this.prevPic1 && this.prevPic2)
+          {
+            this.timeline = new TimelineMax({onComplete: this.onLoadComplete.bind(this)});
+
+            this.timeline.add( TweenMax.to(this.prevPic1, .8, {ease: Power4.easeInOut, y: -this.prevPic1.height}) ,0);
+            this.timeline.add( TweenMax.to(this.prevPic2, .8, {ease: Power4.easeInOut, y: -this.prevPic1.height}) ,0);
+
+            this.timeline.add( TweenMax.from(this.photo1, .8, {ease: Power4.easeInOut, y: this.photo1.height}) ,0);
+            this.timeline.add( TweenMax.from(this.photo2, .8, {ease: Power4.easeInOut, y: this.photo2.height}) ,0);
+
+          } else {
+            this.onLoadComplete();
+          }
+
       }
   }
 
   onLoadComplete()
   {
+    if(this.prevPic1 && this.prevPic2)
+    {
+      this.stage.removeChild(this.prevPic1);
+      this.stage.removeChild(this.prevPic2);
+    }
+
+    this.clearMask();
     this.toggleMask();
+
     this.ee.emit('completeLoading');
   }
 
@@ -81,7 +116,7 @@ class Stage  {
     {
       this.generateShapes();
     } else {
-      this.createIntro();
+      this.shapes[0].resize();
     }
   }
 
